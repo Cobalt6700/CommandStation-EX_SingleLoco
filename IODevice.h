@@ -28,7 +28,7 @@
 
 // Define symbol IO_NO_HAL to reduce FLASH footprint when HAL features not required
 // The HAL is disabled by default on Nano and Uno platforms, because of limited flash space.
-#if defined(ARDUINO_AVR_NANO) || defined(ARDUINO_AVR_UNO) 
+#if defined(ARDUINO_AVR_NANO) || defined(ARDUINO_AVR_UNO) || defined (ARDUINO_AVR_PRO) || defined (ARDUINO_AVR_MINI)
 #define IO_NO_HAL
 #endif
 
