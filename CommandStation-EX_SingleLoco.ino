@@ -67,22 +67,22 @@ void setup()
 
   DIAG(F("License GPLv3 fsf.org (c) dcc-ex.com"));
 
-  CONDITIONAL_LCD_START {
+  //CONDITIONAL_LCD_START {
     // This block is still executed for DIAGS if LCD not in use
-    LCD(0,F("DCC++ EX v%S"),F(VERSION));
-    LCD(1,F("Lic GPLv3"));
-  }
+  //  LCD(0,F("DCC++ EX v%S"),F(VERSION));
+  // LCD(1,F("Lic GPLv3"));
+  //}
 
   // Responsibility 2: Start all the communications before the DCC engine
   // Start the WiFi interface on a MEGA, Uno cannot currently handle WiFi
   // Start Ethernet if it exists
-#if WIFI_ON
-  WifiInterface::setup(WIFI_SERIAL_LINK_SPEED, F(WIFI_SSID), F(WIFI_PASSWORD), F(WIFI_HOSTNAME), IP_PORT, WIFI_CHANNEL);
-#endif // WIFI_ON
+//#if WIFI_ON
+//  WifiInterface::setup(WIFI_SERIAL_LINK_SPEED, F(WIFI_SSID), F(WIFI_PASSWORD), F(WIFI_HOSTNAME), IP_PORT, WIFI_CHANNEL);
+//#endif // WIFI_ON
 
-#if ETHERNET_ON
-  EthernetInterface::setup();
-#endif // ETHERNET_ON
+//#if ETHERNET_ON
+//  EthernetInterface::setup();
+//#endif // ETHERNET_ON
 
   // Responsibility 3: Start the DCC engine.
   // Note: this provides DCC with two motor drivers, main and prog, which handle the motor shield(s)
@@ -92,7 +92,7 @@ void setup()
   DCC::begin(MOTOR_SHIELD_TYPE);
 
   // Start RMFT aka EX-RAIL (ignored if no automnation)
-  RMFT::begin();
+ // RMFT::begin();
 
 
   // Invoke any DCC++EX commands in the form "SETUP("xxxx");"" found in optional file mySetup.h.
@@ -103,13 +103,13 @@ void setup()
   #undef SETUP
   #endif
 
-  #if defined(LCN_SERIAL)
-  LCN_SERIAL.begin(115200);
-  LCN::init(LCN_SERIAL);
-  #endif
+  //#if defined(LCN_SERIAL)
+  //LCN_SERIAL.begin(115200);
+  //LCN::init(LCN_SERIAL);
+  //#endif
 
-  LCD(3,F("Ready"));
-  CommandDistributor::broadcastPower();
+  //LCD(3,F("Ready"));
+  //CommandDistributor::broadcastPower();
 }
 
 void loop()
@@ -124,32 +124,32 @@ void loop()
   SerialManager::loop();
 
   // Responsibility 3: Optionally handle any incoming WiFi traffic
-#if WIFI_ON
-  WifiInterface::loop();
-#endif
-#if ETHERNET_ON
-  EthernetInterface::loop();
-#endif
+//#if WIFI_ON
+ // WifiInterface::loop();
+//#endif
+//#if ETHERNET_ON
+//  EthernetInterface::loop();
+//#endif
 
-  RMFT::loop();  // ignored if no automation
+//  RMFT::loop();  // ignored if no automation
 
-  #if defined(LCN_SERIAL)
-  LCN::loop();
-  #endif
+ // #if defined(LCN_SERIAL)
+ // LCN::loop();
+ // #endif
 
-  LCDDisplay::loop();  // ignored if LCD not in use
+ // LCDDisplay::loop();  // ignored if LCD not in use
 
   // Handle/update IO devices.
-  IODevice::loop();
+ // IODevice::loop();
 
-  Sensor::checkAll(); // Update and print changes
+ // Sensor::checkAll(); // Update and print changes
 
   // Report any decrease in memory (will automatically trigger on first call)
-  static int ramLowWatermark = __INT_MAX__; // replaced on first loop
+  //static int ramLowWatermark = __INT_MAX__; // replaced on first loop
 
-  int freeNow = minimumFreeMemory();
-  if (freeNow < ramLowWatermark) {
-    ramLowWatermark = freeNow;
-    LCD(3,F("Free RAM=%5db"), ramLowWatermark);
-  }
+  //int freeNow = minimumFreeMemory();
+  //if (freeNow < ramLowWatermark) {
+  //  ramLowWatermark = freeNow;
+  //  LCD(3,F("Free RAM=%5db"), ramLowWatermark);
+  //}
 }

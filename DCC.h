@@ -78,13 +78,12 @@ enum   CALLBACK_STATE : byte {
   READY,              // Ready to complete callback  
   }; 
 
-
 // Allocations with memory implications..!
 // Base system takes approx 900 bytes + 8 per loco. Turnouts, Sensors etc are dynamically created
 #if defined(ARDUINO_AVR_UNO)
 const byte MAX_LOCOS = 20;
-#elif defined(ARDUINO_AVR_NANO)
-const byte MAX_LOCOS = 30;
+#elif defined(ARDUINO_AVR_NANO) || defined (ARDUINO_AVR_PRO) || defined (ARDUINO_AVR_MINI)
+const byte MAX_LOCOS = 2;
 #else
 const byte MAX_LOCOS = 50;
 #endif
@@ -207,8 +206,12 @@ private:
 
 #if defined(ARDUINO_AVR_UNO)
 #define ARDUINO_TYPE "UNO"
-#elif defined(ARDUINO_AVR_NANO)
+#elif defined(ARDUINO_AVR_NANO) || defined (ARDUINO_AVR_PRO) || defined (ARDUINO_AVR_MINI)
 #define ARDUINO_TYPE "NANO"
+//#elif defined(ARDUINO_AVR_MINI)
+//#define ARDUINO_TYPE "NANO"
+//#elif defined(ARDUINO_AVR_PRO) 
+//#define ARDUINO_TYPE "NANO"
 #elif defined(ARDUINO_AVR_MEGA2560)
 #define ARDUINO_TYPE "MEGA"
 #elif defined(ARDUINO_ARCH_MEGAAVR)

@@ -44,7 +44,7 @@
 //
 // Figure out if we have enough memory for advanced features
 //
-#if defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_NANO)
+#if defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_NANO) || defined (ARDUINO_AVR_PRO) || defined (ARDUINO_AVR_MINI)
 // nope
 #else
 #define HAS_ENOUGH_MEMORY
