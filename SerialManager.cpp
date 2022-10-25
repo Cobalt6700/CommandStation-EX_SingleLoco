@@ -33,7 +33,8 @@ SerialManager::SerialManager(Stream * myserial) {
 
 void SerialManager::init() {
   while (!Serial && millis() < 5000); // wait max 5s for Serial to start
-  Serial.begin(115200);
+  //Serial.begin(115200);
+  Serial.begin(57600);
   new SerialManager(&Serial);
 #ifdef SERIAL3_COMMANDS
   Serial3.begin(115200);
