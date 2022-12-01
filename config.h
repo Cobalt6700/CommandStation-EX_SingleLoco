@@ -51,10 +51,13 @@ The configuration file for DCC-EX Command Station
 //  new MotorDriver(11, 10, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN)
 
 //#define MOTOR_SHIELD_TYPE SN754410NE
-
+#if defined(MEGACOREX_DEFAULT_48PIN_PINOUT)
 #define PWR_PIN 13
 #define SIG_PIN 16
-
+#else
+#define PWR_PIN 3
+#define SIG_PIN 9
+#endif
 #define GTI_PCB F("GazTechIndustries PCB"),\
   new MotorDriver(PWR_PIN, SIG_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN), \
   new MotorDriver(PWR_PIN, SIG_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN)
