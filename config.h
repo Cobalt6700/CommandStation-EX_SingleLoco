@@ -46,11 +46,21 @@ The configuration file for DCC-EX Command Station
 //
 //#define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
 
-#define SN754410NE F("SN754410NE"),\
-  new MotorDriver(3, 9, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN), \
-  new MotorDriver(11, 10, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN)
+//#define SN754410NE F("SN754410NE"),\
+//  new MotorDriver(3, 9, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN), \
+//  new MotorDriver(11, 10, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN)
 
-#define MOTOR_SHIELD_TYPE SN754410NE
+//#define MOTOR_SHIELD_TYPE SN754410NE
+
+#define PWR_PIN 13
+#define SIG_PIN 16
+
+#define GTI_PCB F("GazTechIndustries PCB"),\
+  new MotorDriver(PWR_PIN, SIG_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN), \
+  new MotorDriver(PWR_PIN, SIG_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN)
+
+#define MOTOR_SHIELD_TYPE GTI_PCB
+
 /////////////////////////////////////////////////////////////////////////////////////
 //
 // The IP port to talk to a WIFI or Ethernet shield.
