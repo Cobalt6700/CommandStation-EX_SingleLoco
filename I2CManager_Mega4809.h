@@ -41,8 +41,14 @@ void I2CManagerClass::I2C_setClock(unsigned long i2cClockSpeed) {
     i2cClockSpeed = 100000;
     t_rise = 1000;
   }
+
+  #if defined(MEGACOREX)
+  uint32_t baud = (F_CPU / i2cClockSpeed - F_CPU / 1000 / 1000
+    * t_rise / 1000 - 10) / 2;
+  #else
   uint32_t baud = (F_CPU_CORRECTED / i2cClockSpeed - F_CPU_CORRECTED / 1000 / 1000
     * t_rise / 1000 - 10) / 2;
+  #endif 
   TWI0.MBAUD = (uint8_t)baud;
 }
 
