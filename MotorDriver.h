@@ -63,6 +63,12 @@ class MotorDriver {
     inline byte getFaultPin() {
 	return faultPin;
     }
+    inline byte getPWRPin() {
+	return powerPin;
+    }
+    inline byte getSIGPin() {
+	return signalPin;
+    }
   private:
     void  getFastPin(const FSH* type,int pin, bool input, FASTPIN & result);
     void  getFastPin(const FSH* type,int pin, FASTPIN & result) {

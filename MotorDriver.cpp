@@ -82,6 +82,8 @@ MotorDriver::MotorDriver(byte power_pin, byte signal_pin, byte signal_pin2, int8
   else  
     DIAG(F("MotorDriver currentPin=A%d, senseOffset=%d, rawCurrentTripValue(relative to offset)=%d"),
     currentPin-A0, senseOffset,rawCurrentTripValue);
+
+    //DIAG(F("MotorDriver PWR Pin: %d, SIG pin: %d"), powerPin, signalPin );
 }
 
 bool MotorDriver::isPWMCapable() {

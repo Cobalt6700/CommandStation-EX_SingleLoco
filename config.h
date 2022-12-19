@@ -46,23 +46,34 @@ The configuration file for DCC-EX Command Station
 //
 //#define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
 
-//#define SN754410NE F("SN754410NE"),\
-//  new MotorDriver(3, 9, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN), \
-//  new MotorDriver(11, 10, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, 4.88, 3000, UNUSED_PIN)
-
-//#define MOTOR_SHIELD_TYPE SN754410NE
 #if defined(MEGACOREX_DEFAULT_48PIN_PINOUT)
-#define PWR_PIN 13
-#define SIG_PIN 16
+#define PWR_PIN_M 12
+
+#define SIG_PIN_M 16 //MCU PIN 12 PC2 - worky
+//#define SIG_PIN_M 17 //MCU PIN 13 PC3 -
+
+#define PWR_PIN_P 11
+
+#define SIG_PIN_P 13 //MCU PIN 9 PB5 - worky
+//#define SIG_PIN_P 17 //MCU PIN 13 PC3 - no worky
+//#define SIG_PIN_P 18 //MCU PIN 16 PC4 - worky
+//#define SIG_PIN_P 19 //MCU PIN 17 PC5 - worky
+
+
 #else
-#define PWR_PIN 3
-#define SIG_PIN 9
+#define PWR_PIN_M 3
+#define SIG_PIN_M 9
+
+#define PWR_PIN_P 4
+#define SIG_PIN_P 10
 #endif
 #define GTI_PCB F("GazTechIndustries PCB"),\
-  new MotorDriver(PWR_PIN, SIG_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN), \
-  new MotorDriver(PWR_PIN, SIG_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN)
+  new MotorDriver(PWR_PIN_M, SIG_PIN_M, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN), \
+  new MotorDriver(PWR_PIN_P, SIG_PIN_P, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN)
 
 #define MOTOR_SHIELD_TYPE GTI_PCB
+
+#define IO_NO_HAL
 
 /////////////////////////////////////////////////////////////////////////////////////
 //
@@ -209,7 +220,7 @@ The configuration file for DCC-EX Command Station
 // NOTE: do not define here the WiFi shield serial port or your wifi will not work.
 //
 //#define SERIAL1_COMMANDS
-//#define SERIAL2_COMMANDS
+#define SERIAL2_COMMANDS
 //#define SERIAL3_COMMANDS
 
 /////////////////////////////////////////////////////////////////////////////////////

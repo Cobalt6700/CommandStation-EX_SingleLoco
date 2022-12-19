@@ -55,7 +55,51 @@ INTERRUPT_CALLBACK interruptHandler=0;
 
 #ifdef ARDUINO_ARCH_MEGAAVR
   // Arduino unoWifi Rev2 and nanoEvery architectire 
+
+#if defined(MEGACOREX_DEFAULT_48PIN_PINOUT)
+  #define TIMER0_A_PIN 13
+  #define TIMER0_B_PIN 16
+  #define TIMER0_C_PIN 17
+  #define TIMER0_D_PIN 18
+  #define TIMER0_E_PIN 19
+
+    void DCCTimer::begin(INTERRUPT_CALLBACK callback) {
+    interruptHandler=callback;
+    noInterrupts(); 
+    ADC0.CTRLC = (ADC0.CTRLC & 0b00110000) | 0b01000011;  // speed up analogRead sample time   
+    TCB3.CTRLB = TCB_CNTMODE_INT_gc & ~TCB_CCMPEN_bm; // timer compare mode with output disabled
+    TCB3.CTRLA = TCB_CLKSEL_CLKDIV2_gc; //   8 MHz ~ 0.125 us      
+    TCB3.CCMP =  CLOCK_CYCLES -1;  // 1 tick less for timer reset
+    TCB3.INTFLAGS = TCB_CAPT_bm; // clear interrupt request flag
+    TCB3.INTCTRL = TCB_CAPT_bm;  // Enable the interrupt
+    TCB3.CNT = 0;
+    TCB3.CTRLA |= TCB_ENABLE_bm;  // start
+    interrupts();
+  }
   
+  // ISR called by timer interrupt every 58uS
+  ISR(TCB3_INT_vect){
+    TCB3.INTFLAGS = TCB_CAPT_bm;
+    interruptHandler();
+  }
+
+    bool DCCTimer::isPWMPin(byte pin) {
+      (void) pin; 
+      return false;  // TODO what are the relevant pins? 
+      
+  }
+/*
+  bool DCCTimer::isPWMPin(byte pin) {  
+        return pin==TIMER0_A_PIN 
+            || pin==TIMER0_B_PIN  
+            || pin==TIMER0_C_PIN
+            || pin==TIMER0_D_PIN
+            || pin==TIMER0_E_PIN            
+        ;  
+  }
+*/
+
+#else  
   void DCCTimer::begin(INTERRUPT_CALLBACK callback) {
     interruptHandler=callback;
     noInterrupts(); 
@@ -69,7 +113,6 @@ INTERRUPT_CALLBACK interruptHandler=0;
     TCB0.CTRLA |= TCB_ENABLE_bm;  // start
     interrupts();
   }
-
   // ISR called by timer interrupt every 58uS
   ISR(TCB0_INT_vect){
     TCB0.INTFLAGS = TCB_CAPT_bm;
@@ -77,9 +120,12 @@ INTERRUPT_CALLBACK interruptHandler=0;
   }
 
   bool DCCTimer::isPWMPin(byte pin) {
-       (void) pin; 
-       return false;  // TODO what are the relevant pins? 
+      (void) pin; 
+      return false;  // TODO what are the relevant pins? 
+      
   }
+
+#endif
 
  void DCCTimer::setPWM(byte pin, bool high) {
     (void) pin;
