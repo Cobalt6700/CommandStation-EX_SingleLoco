@@ -190,7 +190,12 @@ void DCCEXParser::parse(const FSH * cmd) {
       int size=strlen_P((char *)cmd)+1; 
       char buffer[size];
       strcpy_P(buffer,(char *)cmd);
-      parse(&Serial,(byte *)buffer,NULL);
+      #if defined( MEGACOREX )
+        parse(&Serial2,(byte *)buffer,NULL);
+        #warning "MEGACOREX_DCCparse"
+      #else
+        parse(&Serial,(byte *)buffer,NULL);
+      #endif
 }
 
 // See documentation on DCC class for info on this section

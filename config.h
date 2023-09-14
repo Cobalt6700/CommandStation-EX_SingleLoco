@@ -47,26 +47,30 @@ The configuration file for DCC-EX Command Station
 //#define MOTOR_SHIELD_TYPE STANDARD_MOTOR_SHIELD
 
 #if defined(MEGACOREX_DEFAULT_48PIN_PINOUT)
-#define PWR_PIN_M 12
+  #define PWR_PIN_M 13
+  #define SIG_PIN_M 16 //MCU PIN 12 PC2
 
-#define SIG_PIN_M 16 //MCU PIN 12 PC2 - worky
-//#define SIG_PIN_M 17 //MCU PIN 13 PC3 -
+  #define PWR_PIN_P 12
+  #define SIG_PIN_P 17 //MCU PIN 13 PC3
 
-#define PWR_PIN_P 11
+  /*
+  Stuff for testting
+  //#define SIG_PIN_M 17 //MCU PIN 13 PC3
 
-#define SIG_PIN_P 13 //MCU PIN 9 PB5 - worky
-//#define SIG_PIN_P 17 //MCU PIN 13 PC3 - no worky
-//#define SIG_PIN_P 18 //MCU PIN 16 PC4 - worky
-//#define SIG_PIN_P 19 //MCU PIN 17 PC5 - worky
+  //#define SIG_PIN_P 13 //MCU PIN 9 PB5
+  //#define SIG_PIN_P 18 //MCU PIN 16 PC4
+  //#define SIG_PIN_P 19 //MCU PIN 17 PC5
 
+  */
 
 #else
-#define PWR_PIN_M 3
-#define SIG_PIN_M 9
+  #define PWR_PIN_M 3
+  #define SIG_PIN_M 9
 
-#define PWR_PIN_P 4
-#define SIG_PIN_P 10
+  #define PWR_PIN_P 4
+  #define SIG_PIN_P 10
 #endif
+
 #define GTI_PCB F("GazTechIndustries PCB"),\
   new MotorDriver(PWR_PIN_M, SIG_PIN_M, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN), \
   new MotorDriver(PWR_PIN_P, SIG_PIN_P, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN, UNUSED_PIN)
@@ -219,8 +223,9 @@ The configuration file for DCC-EX Command Station
 // To monitor a throttle on one or more serial ports, uncomment the defines below.
 // NOTE: do not define here the WiFi shield serial port or your wifi will not work.
 //
+
 //#define SERIAL1_COMMANDS
-#define SERIAL2_COMMANDS
+//#define SERIAL2_COMMANDS
 //#define SERIAL3_COMMANDS
 
 /////////////////////////////////////////////////////////////////////////////////////

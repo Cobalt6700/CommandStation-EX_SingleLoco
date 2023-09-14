@@ -29,7 +29,9 @@
 #include "DCCWaveform.h"
 #include "DCC.h"
 
-#if defined(BIG_MEMORY) | defined(WIFI_ON) | defined(ETHERNET_ON)
+#if defined(BIG_MEMORY) | defined(WIFI_ON) | defined(ETHERNET_ON) | defined( MEGACOREX )
+
+#warning "Com_dist_active"
 // This section of CommandDistributor is simply not relevant on a uno or similar
 const byte NO_CLIENT=255;
 
@@ -85,7 +87,11 @@ void CommandDistributor::broadcast(bool includeWithrottleClients) {
 #else
 // For a UNO/NANO we can broadcast direct to just one Serial instead of the ring
 // Redirect ring output ditrect to Serial
-#define broadcastBufferWriter &Serial
+#if defined( MEGACOREX )
+  #define broadcastBufferWriter &Serial2
+#else
+  #define broadcastBufferWriter &Serial
+#endif
 // and ignore the internal broadcast call.
 void CommandDistributor::broadcast(bool includeWithrottleClients) {
   (void)includeWithrottleClients;

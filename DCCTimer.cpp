@@ -55,6 +55,31 @@ INTERRUPT_CALLBACK interruptHandler=0;
 
 #ifdef ARDUINO_ARCH_MEGAAVR
   // Arduino unoWifi Rev2 and nanoEvery architectire 
+/*
+
+////////////////////////////////////////////////////////
+
+Had a go at getting High Accuracy Waveform running for 
+MEGAAVR. The SetPWM function needs wirting with the proper registers.
+Hopefully someone from the DCC++EX team who is much smarter than myself
+can get this sorted at some point in the future. Until then, we will
+use Normal Accuracy Waveform. 
+
+Output from NAW on SerialDCC board: 
+
+13:27:55.507 -> -
+13:27:55.507 -> Bit Count/4 sec=27794 (Zeros=6951, Ones=20843), Glitches=0
+13:27:55.507 -> Valid Packets=632, NMRA out of spec=0, Checksum Errors=0, Lost pkts=0, Long pkts=0
+13:27:55.507 -> 0 half-bit length (us): 115.5 (111-119) delta < 5
+13:27:55.507 -> 1 half-bit length (us): 57.5 (54-61) delta < 5
+13:27:55.507 -> --
+13:27:55.507 -> Idle                    11111111 00000000
+
+
+Good enough for the moment - I hope! Gaztech 19.12.22
+
+////////////////////////////////////////////////////////
+
 
 #if defined(MEGACOREX_DEFAULT_48PIN_PINOUT)
   #define TIMER0_A_PIN 13
@@ -83,12 +108,6 @@ INTERRUPT_CALLBACK interruptHandler=0;
     interruptHandler();
   }
 
-    bool DCCTimer::isPWMPin(byte pin) {
-      (void) pin; 
-      return false;  // TODO what are the relevant pins? 
-      
-  }
-/*
   bool DCCTimer::isPWMPin(byte pin) {  
         return pin==TIMER0_A_PIN 
             || pin==TIMER0_B_PIN  
@@ -97,9 +116,15 @@ INTERRUPT_CALLBACK interruptHandler=0;
             || pin==TIMER0_E_PIN            
         ;  
   }
-*/
+
+   void DCCTimer::setPWM(byte pin, bool high) {
+    (void) pin;
+    (void) high;
+    // TODO what are the relevant pins?
+ }
 
 #else  
+*/
   void DCCTimer::begin(INTERRUPT_CALLBACK callback) {
     interruptHandler=callback;
     noInterrupts(); 
@@ -125,13 +150,13 @@ INTERRUPT_CALLBACK interruptHandler=0;
       
   }
 
-#endif
-
- void DCCTimer::setPWM(byte pin, bool high) {
+   void DCCTimer::setPWM(byte pin, bool high) {
     (void) pin;
     (void) high;
     // TODO what are the relevant pins?
  }
+
+ //#endif
 
   void   DCCTimer::getSimulatedMacAddress(byte mac[6]) {
     memcpy(mac,(void *) &SIGROW.SERNUM0,6);  // serial number
@@ -235,12 +260,16 @@ void DCCTimer::read(uint8_t word, uint8_t *mac, uint8_t offset) {
 
  void DCCTimer::setPWM(byte pin, bool high) {
     if (pin==TIMER1_A_PIN) {
-      TCCR1A |= _BV(COM1A1);
-      OCR1A= high?1024:0;
+      TCCR1A |= _BV(COM1A1); // Timer/Counter Control Register 1A Set BIT 7 on
+                             // Clear OC1A/OC1B on compare match, set OC1A/OC1B at
+                            // BOTTOM (non-inverting mode)
+
+      OCR1A= high?1024:0; // Output Compare Register 1A 
+                          //if true OCR1A = 1024 (0b0000010000000000) , else 0
     }
     else if (pin==TIMER1_B_PIN) { 
       TCCR1A |= _BV(COM1B1);
-      OCR1B= high?1024:0;
+      OCR1B= high?1024:0; 
     }
  #ifdef TIMER1_C_PIN 
     else if (pin==TIMER1_C_PIN) { 

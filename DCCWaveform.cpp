@@ -52,6 +52,7 @@ void DCCWaveform::begin(MotorDriver * mainDriver, MotorDriver * progDriver) {
   MotorDriver::usePWM= mainDriver->isPWMCapable() && progDriver->isPWMCapable();
   DIAG(F("Signal pin config: %S accuracy waveform"),
 	 MotorDriver::usePWM ? F("high") : F("normal") );
+   
   DIAG(F("MAIN Board pins - SIG: %d, PWR: %d"), 
   mainDriver->getSIGPin(), mainDriver->getPWRPin());
   DIAG(F("PROG Board pins - SIG: %d, PWR: %d"), 

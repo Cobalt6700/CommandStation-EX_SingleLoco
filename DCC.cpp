@@ -61,7 +61,12 @@ byte DCC::globalSpeedsteps=128;
 
 void DCC::begin(const FSH * motorShieldName, MotorDriver * mainDriver, MotorDriver* progDriver) {
   shieldName=(FSH *)motorShieldName;
-  StringFormatter::send(Serial,F("<iDCC-EX V-%S / %S / %S G-%S>\n"), F(VERSION), F(ARDUINO_TYPE), shieldName, F(GITHUB_SHA));
+  #if defined( MEGACOREX )
+    StringFormatter::send(Serial2,F("<iDCC-EX V-%S / %S / %S G-%S>\n"), F(VERSION), F(ARDUINO_TYPE), shieldName, F(GITHUB_SHA));
+    #warning "MEGACOREX_DCCcpp"
+  #else
+    StringFormatter::send(Serial,F("<iDCC-EX V-%S / %S / %S G-%S>\n"), F(VERSION), F(ARDUINO_TYPE), shieldName, F(GITHUB_SHA));
+  #endif  
 
   // Initialise HAL layer before reading EEprom.
   IODevice::begin();

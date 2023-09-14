@@ -207,7 +207,11 @@
     }
 
 #ifdef EESTOREDEBUG
+  #if defined( MEGACOREX )
+    printAll(&Serial2);
+  #else
     printAll(&Serial);
+  #endif
 #endif
     return tt;
   }

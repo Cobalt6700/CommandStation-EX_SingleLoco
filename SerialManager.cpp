@@ -32,29 +32,32 @@ SerialManager::SerialManager(Stream * myserial) {
 } 
 
 void SerialManager::init() {
-  //#if defined(MEGACOREX_DEFAULT_48PIN_PINOUT)
-  // while (!Serial2 && millis() < 5000); // wait max 5s for Serial to start
-  // Serial2.begin(115200);
-  //  new SerialManager(&Serial2);
-  //  Serial.begin(115200);
-  //  new SerialManager(&Serial);
-  //#else
+  #if defined(MEGACOREX)
+    while (!Serial2 && millis() < 5000); // wait max 5s for Serial to start
+    Serial2.begin(115200);
+    new SerialManager(&Serial2);
+    Serial.begin(115200);
+    new SerialManager(&Serial);
+    #warning "MEGACOREX_SerMan"
+  #else
     while (!Serial && millis() < 5000); // wait max 5s for Serial to start
     Serial.begin(115200);
     new SerialManager(&Serial);
-  //#endif
+  #endif
 
-#ifdef SERIAL3_COMMANDS
-  Serial3.begin(115200);
-  new SerialManager(&Serial3);
-#endif
-#ifdef SERIAL2_COMMANDS
-  Serial2.begin(115200);
-  new SerialManager(&Serial2);
-#endif
-#ifdef SERIAL1_COMMANDS
-  Serial1.begin(115200);
-  new SerialManager(&Serial1);
+#if !defined(MEGACOREX)
+  #ifdef SERIAL3_COMMANDS
+    Serial3.begin(115200);
+    new SerialManager(&Serial3);
+  #endif
+  #ifdef SERIAL2_COMMANDS
+    Serial2.begin(115200);
+    new SerialManager(&Serial2);
+  #endif
+  #ifdef SERIAL1_COMMANDS
+    Serial1.begin(115200);
+    new SerialManager(&Serial1);
+  #endif
 #endif
 }
 

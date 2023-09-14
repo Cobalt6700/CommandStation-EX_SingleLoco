@@ -23,6 +23,8 @@
    // Some processors use a gcc compiler that renames va_list!!!
   #include <cstdarg>
   Print * StringFormatter::diagSerial= &SerialUSB; 
+#elif defined( MEGACOREX )
+  Print * StringFormatter::diagSerial=&Serial2;
 #else
   Print * StringFormatter::diagSerial=&Serial;
 #endif
